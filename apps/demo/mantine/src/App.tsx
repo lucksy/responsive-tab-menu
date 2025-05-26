@@ -14,7 +14,7 @@ import {
   Container,
 } from '@mantine/core';
 import { IconChevronDown, IconChevronUp } from '@tabler/icons-react';
-import { ResponsiveTabMenu, type TabItem } from 'responsive-tab-menu';
+import { ResponsiveTabMenu, type TabItem } from 'responsive-tab-menu-react';
 
 const tabs: TabItem[] = [
   { label: 'Home', value: 'home' },

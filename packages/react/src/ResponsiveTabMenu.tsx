@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState, useMemo } from 'react';
 import {
   Box,
   Button,
@@ -12,17 +12,16 @@ import {
   useMantineTheme,
   type TabsProps,
 } from '@mantine/core';
+import { ResponsiveMenuLogic, type TabItem as CoreTabItem } from 'responsive-tab-menu-core';
 
-// Type for each tab item
-export type TabItem = {
-  label: string;
-  value: string;
+// Type for each tab item, extending the core type with React-specific elements
+export type TabItem = CoreTabItem & {
   leftSlot?: React.ReactNode;
   rightSlot?: React.ReactNode;
 };
 
 type ResponsiveTabMenuProps = {
-  items: TabItem[];                     // All tab items
+  items: TabItem[]; // All tab items
   active: string;                       // Currently active tab value
   onChange: (value: string) => void;    // Called when a new tab is selected
   menuLabel?: string;                   // Label for the "More" dropdown tab
@@ -60,8 +59,11 @@ export function ResponsiveTabMenu({
   const containerRef = useRef<HTMLDivElement>(null);
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const virtualRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  const [visibleItems, setVisibleItems] = useState<TabItem[]>(items);
-  const [overflowItems, setOverflowItems] = useState<TabItem[]>([]);
+
+  // Encapsulate responsive logic
+  const menuLogic = useMemo(() => new ResponsiveMenuLogic(items), [items]);
+  const [visibleItems, setVisibleItems] = useState<TabItem[]>(menuLogic.visibleItems);
+  const [overflowItems, setOverflowItems] = useState<TabItem[]>(menuLogic.overflowItems);
 
   // Defer tab switch to avoid blocking interactions
   const deferOnChange = (value: string) => {
@@ -77,35 +79,33 @@ export function ResponsiveTabMenu({
     if (!containerRef.current || virtualRefs.current.length === 0) return;
 
     const availableWidth = containerRef.current.offsetWidth - 65; // 96px reserved for "More"
-    let usedWidth = 0;
-    let splitIndex = items.length;
+    const tabWidths = virtualRefs.current.map(el => (el ? el.offsetWidth + 8 : 0));
 
-    for (let i = 0; i < items.length; i++) {
-      const el = virtualRefs.current[i];
-      if (el) {
-        usedWidth += el.offsetWidth + 8;
-        if (usedWidth > availableWidth) {
-          splitIndex = i;
-          break;
-        }
-      }
-    }
-
-    setVisibleItems(items.slice(0, splitIndex));
-    setOverflowItems(items.slice(splitIndex));
+    menuLogic.calculateOverflow(availableWidth, tabWidths);
+    setVisibleItems([...menuLogic.visibleItems]);
+    setOverflowItems([...menuLogic.overflowItems]);
   };
 
   // Run once on mount or if items change
   useLayoutEffect(() => {
-    calculateOverflow();
-  }, [items]);
+    // Ensure virtual refs are populated before first calculation
+    requestAnimationFrame(calculateOverflow);
+  }, [items, menuLogic]);
 
   // Resize observer to recalculate overflow dynamically
   useEffect(() => {
     const observer = new ResizeObserver(() => requestAnimationFrame(calculateOverflow));
-    if (containerRef.current) observer.observe(containerRef.current);
-    return () => observer.disconnect();
-  }, [items]);
+    const currentContainerRef = containerRef.current;
+    if (currentContainerRef) {
+      observer.observe(currentContainerRef);
+    }
+    return () => {
+      if (currentContainerRef) {
+        observer.unobserve(currentContainerRef);
+      }
+      observer.disconnect();
+    };
+  }, [items, menuLogic, calculateOverflow]);
 
   // Setup swipe support for touch devices
   const activeIndex = items.findIndex((item) => item.value === active);

@@ -1,0 +1,20 @@
+{
+  "name": "responsive-tab-menu-monorepo",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Monorepo for responsive tab menu packages and demos",
+  "scripts": {
+    "build": "npm run build -ws --if-present",
+    "dev:html": "npm run dev -w demo-html",
+    "dev:react": "npm run dev -w demo-react",
+    "dev:mantine": "npm run dev -w demo-mantine",
+    "postinstall": "npm run build -w responsive-tab-menu-core && npm run build -w responsive-tab-menu-html && npm run build -w responsive-tab-menu-react --if-present"
+  },
+  "workspaces": [
+    "packages/*",
+    "apps/demo/*"
+  ],
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

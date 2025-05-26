@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "declaration": true, // Generate .d.ts files
+    "declarationMap": true // Generate source maps for .d.ts files (optional, but good for DX)
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
+}

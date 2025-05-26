@@ -1,0 +1,29 @@
+{
+  "name": "responsive-tab-menu-react",
+  "version": "0.1.0",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts --clean",
+    "dev": "tsup src/index.ts --dts --watch --format esm,cjs"
+  },
+  "dependencies": {
+    "responsive-tab-menu-core": "workspace:*",
+    "@mantine/core": "^7.0.0",
+    "react": "^18.0.0"
+  },
+  "peerDependencies": {
+    "react": ">=17",
+    "@mantine/core": ">=7"
+  },
+  "devDependencies": {
+    "tsup": "^7.2.0",
+    "typescript": "^5.0.0",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0"
+  },
+  "files": [
+    "dist"
+  ]
+}
