@@ -14,7 +14,7 @@ import {
   Container,
 } from '@mantine/core';
 import { IconChevronDown, IconChevronUp } from '@tabler/icons-react';
-import { ResponsiveTabMenu, type TabItem } from 'responsive-tab-menu';
+import { ResponsiveTabsMantine8, type TabItem } from 'responsive-tab-menu';
 
 const tabs: TabItem[] = [
   { label: 'Home', value: 'home' },
@@ -32,8 +32,13 @@ function DebugMeasurements({
   items: TabItem[];
   containerRef: React.RefObject<HTMLDivElement>;
 }) {
+  interface DimensionedTabItem {
+    label: TabItem['label']; // Or React.ReactNode directly
+    width: number;
+  }
+
   const virtualRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  const [dimensions, setDimensions] = useState<any>({});
+  const [dimensions, setDimensions] = useState<any>({}); // Consider typing this state if structure is stable
   const [show, setShow] = useState(true);
 
   const update = () => {
@@ -93,7 +98,7 @@ function DebugMeasurements({
         {items.map((item, i) => (
           <Button
             key={'virtual-' + item.value}
-            ref={(el) => (virtualRefs.current[i] = el)}
+            ref={(el: HTMLButtonElement | null) => { virtualRefs.current[i] = el; }}
             size="sm"
             variant="subtle"
             radius="sm"
@@ -133,14 +138,14 @@ function DebugMeasurements({
           <Divider my="sm" />
           <Text fw={600}>Visible Tabs ({dimensions.visible?.length}):</Text>
           <Stack gap={4}>
-            {dimensions.visible?.map((tab, idx) => (
+            {dimensions.visible?.map((tab: DimensionedTabItem, idx: number) => (
               <Text key={`v-${idx}`}>- {tab.label}: {tab.width}px</Text>
             ))}
           </Stack>
           <Divider my="sm" />
           <Text fw={600}>Overflow Tabs ({dimensions.overflow?.length}):</Text>
           <Stack gap={4}>
-            {dimensions.overflow?.map((tab, idx) => (
+            {dimensions.overflow?.map((tab: DimensionedTabItem, idx: number) => (
               <Text key={`o-${idx}`}>- {tab.label}: {tab.width}px</Text>
             ))}
           </Stack>
@@ -155,7 +160,7 @@ function App() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   return (
-    <MantineProvider withGlobalStyles withNormalizeCSS>
+    <MantineProvider>
       <Box
         style={{
           minHeight: '100vh',
@@ -166,8 +171,8 @@ function App() {
           <Title order={2} mb="lg" c="pink.9" fw={800}>
             Responsive Tab Menu Demo
           </Title>
-          <ResponsiveTabMenu items={tabs} active={active} onChange={setActive} />
-          <DebugMeasurements items={tabs} containerRef={containerRef} />
+          <ResponsiveTabsMantine8 items={tabs} active={active} onChange={setActive} />
+          <DebugMeasurements items={tabs} containerRef={containerRef as React.RefObject<HTMLDivElement>} />
         </Container>
       </Box>
     </MantineProvider>

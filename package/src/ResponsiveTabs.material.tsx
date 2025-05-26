@@ -12,6 +12,22 @@ import { useResponsiveTabs } from './useResponsiveTabs';
 import type { TabItem } from './shared-types';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'; // Example icon for "More"
 
+// Helper function to format ReactNode for MUI Tab's label/icon props
+const formatTabProp = (node: React.ReactNode): string | React.ReactElement | undefined => {
+  if (typeof node === 'string' || React.isValidElement(node)) {
+    // If node is already a string or a valid React element, return it directly.
+    // React.isValidElement narrows node to ReactElement, string is fine.
+    return node as string | React.ReactElement; 
+  }
+  if (typeof node === 'number' || typeof node === 'boolean') {
+    // Convert numbers and booleans to strings.
+    return String(node);
+  }
+  // For null, undefined, ReactFragment, ReactPortal, etc., return undefined.
+  // MUI Tab will typically treat undefined as "no prop provided".
+  return undefined;
+};
+
 interface ResponsiveTabsMaterialProps {
   items: TabItem[];
   active: string; // Value of the active tab
@@ -144,8 +160,8 @@ export function ResponsiveTabsMaterial({
             {...muiTabProps}
             key={item.value}
             value={item.value}
-            label={item.label}
-            icon={item.leftSlot} // MUI Tab uses `icon` for left slot
+            label={formatTabProp(item.label)}
+            icon={formatTabProp(item.leftSlot)}
             iconPosition="start" // Or "end" for rightSlot, but MUI Tab `icon` is typically one side
             // To support both, label could be a ReactNode: <span>{item.leftSlot}{item.label}{item.rightSlot}</span>
             // For simplicity, using `icon` for `leftSlot`. `rightSlot` might need custom rendering within `label`.

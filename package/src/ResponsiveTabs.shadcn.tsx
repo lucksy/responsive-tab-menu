@@ -17,7 +17,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
 } from '@radix-ui/react-dropdown-menu'; // Or from '@/components/ui/dropdown-menu'
-import { Slot as Button } from '@radix-ui/react-slot'; // Corrected path and aliased Slot as Button
+// Removed: import { Slot as Button } from '@radix-ui/react-slot';
 import { MoreHorizontal } from 'lucide-react'; // Example icon
 
 import { useResponsiveTabs } from './useResponsiveTabs';
@@ -98,15 +98,14 @@ export function ResponsiveTabsShadcn({
         className="invisible absolute top-[-9999px] left-0 h-0 overflow-hidden flex whitespace-nowrap"
       >
         {items.map((item, i) => (
-          <Button // Using Button, styled like TabsTrigger. Or an unstyled TabsTrigger.
+          <button // Changed from Button (Slot alias) to button for virtual tabs
             key={`virtual-${item.value}`}
             ref={(el: HTMLButtonElement | null) => {
               if (virtualTabRefs.current) {
                 virtualTabRefs.current[i] = el;
               }
             }}
-            variant="ghost" // Common Shadcn variant that might match TabsTrigger base style
-            size="sm"       // Common Shadcn size
+            // Removed variant="ghost" and size="sm" as they are not applicable to <button>
             className={cn(
               // Mimic Shadcn TabsTrigger styling that affects width:
               // Typically: inline-flex items-center justify-center whitespace-nowrap rounded-sm
@@ -124,7 +123,7 @@ export function ResponsiveTabsShadcn({
             {item.leftSlot}
             {item.label}
             {item.rightSlot}
-          </Button>
+          </button>
         ))}
       </div>
 
@@ -166,9 +165,8 @@ export function ResponsiveTabsShadcn({
           {overflowTabs.length > 0 && (
             <DropdownMenu open={isOverflowMenuOpen} onOpenChange={setIsOverflowMenuOpen}>
               <DropdownMenuTrigger asChild>
-                <Button // Using a Button styled like a TabsTrigger or a specific overflow button
-                  variant="ghost" // Or another appropriate variant
-                  size="sm"       // Or another appropriate size
+                <button // Changed from Button (Slot alias) to button for DropdownMenuTrigger child
+                  // Removed variant="ghost" and size="sm"
                   className={cn(
                     'ml-auto flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium', // Base style
                     // 'data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm', // Optional active style
@@ -178,7 +176,7 @@ export function ResponsiveTabsShadcn({
                 >
                   <MoreHorizontal className="h-4 w-4 mr-1" />
                   <span>({overflowTabs.length})</span>
-                </Button>
+                </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className={cn(dropdownMenuContentClassName)}>
                 <DropdownMenuLabel>{menuLabel}</DropdownMenuLabel>

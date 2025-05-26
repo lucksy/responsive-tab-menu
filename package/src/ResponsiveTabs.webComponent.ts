@@ -335,15 +335,16 @@ export class ResponsiveTabsWebComponent extends HTMLElement {
     this.removeOverflowMenu(); // Clear existing overflow menu first
 
     if (overflowItems.length > 0) {
-      this.overflowMenuButtonElement = document.createElement('button'); // Or a div styled as a tab
-      this.overflowMenuButtonElement.className = 'overflow-menu-button'; // For specific styling
-      this.overflowMenuButtonElement.setAttribute('part', 'overflow-button');
-      this.overflowMenuButtonElement.setAttribute('aria-haspopup', 'true');
-      this.overflowMenuButtonElement.setAttribute('aria-expanded', 'false');
+      // Create elements and assign to local constants first
+      const newMenuButton = document.createElement('button'); // Or a div styled as a tab
+      newMenuButton.className = 'overflow-menu-button'; // For specific styling
+      newMenuButton.setAttribute('part', 'overflow-button');
+      newMenuButton.setAttribute('aria-haspopup', 'true');
+      newMenuButton.setAttribute('aria-expanded', 'false');
       
-      this.overflowDropdownElement = document.createElement('div');
-      this.overflowDropdownElement.className = 'overflow-dropdown';
-      this.overflowDropdownElement.setAttribute('part', 'overflow-dropdown');
+      const newDropdownElement = document.createElement('div');
+      newDropdownElement.className = 'overflow-dropdown';
+      newDropdownElement.setAttribute('part', 'overflow-dropdown');
 
       overflowItems.forEach(itemData => {
         const fullItem = this.items.find(i => i.value === itemData.value);
@@ -366,17 +367,22 @@ export class ResponsiveTabsWebComponent extends HTMLElement {
               }
               this.toggleOverflowMenu(); // Close menu
             });
-            this.overflowDropdownElement.appendChild(menuItem);
+            newDropdownElement.appendChild(menuItem); // Append to the local constant
         }
       });
 
-      this.tabsContainerElement.appendChild(this.overflowMenuButtonElement); // Append button to the main tabs container
-      // The dropdown is appended to the shadow root to overlay correctly, or to a specific container for it
-      if (this.overflowDropdownElement) {
-        this.shadowRootInstance.appendChild(this.overflowDropdownElement); 
-      }
-      this.overflowMenuButtonElement.addEventListener('click', this.toggleOverflowMenu.bind(this));
-      this.renderOverflowMenuButton(); // Set initial text
+      // Assign to class members after full creation and population
+      this.overflowMenuButtonElement = newMenuButton;
+      this.overflowDropdownElement = newDropdownElement;
+
+      // Now use the local, definitely non-null constants for DOM operations
+      this.tabsContainerElement.appendChild(newMenuButton);
+      
+      // this.shadowRootInstance is guaranteed non-null from constructor
+      this.shadowRootInstance.appendChild(newDropdownElement); 
+      
+      newMenuButton.addEventListener('click', this.toggleOverflowMenu.bind(this));
+      this.renderOverflowMenuButton(); // This method internally checks this.overflowMenuButtonElement
     }
   }
   
