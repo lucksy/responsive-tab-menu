@@ -45,9 +45,12 @@ export function ResponsiveTabsMaterial({
     items,
     containerRef,
     tabGap: tabGap ?? 8, // MUI default tab spacing might differ, adjust if needed
-    reservedSpace: reservedSpace ?? (overflowTabs.length > 0 ? 48 : 0), // MUI "More" tab is smaller
+    // Pass the reservedSpace prop directly. The hook itself should manage space for its "More" button.
+    // The prop `reservedSpace` is for external reservations.
+    reservedSpace: reservedSpace, 
   });
 
+  // Now, `overflowTabs` is available for use after the hook call.
   const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -94,7 +97,11 @@ export function ResponsiveTabsMaterial({
         {items.map((item, i) => (
           <Button // Using Button for simplicity; could be unstyled Tab if easier
             key={`virtual-${item.value}`}
-            ref={(el: HTMLButtonElement | null) => (virtualTabRefs.current[i] = el)}
+            ref={(el: HTMLButtonElement | null) => {
+              if (virtualTabRefs.current) {
+                virtualTabRefs.current[i] = el;
+              }
+            }}
             // Attempt to replicate MUI Tab styling that affects width:
             // This is tricky. MUI Tabs have complex styling.
             // Min-width is a key factor for MUI tabs.
@@ -190,4 +197,3 @@ export function ResponsiveTabsMaterial({
     </Box>
   );
 }
-```

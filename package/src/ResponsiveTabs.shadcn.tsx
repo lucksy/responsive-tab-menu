@@ -17,7 +17,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
 } from '@radix-ui/react-dropdown-menu'; // Or from '@/components/ui/dropdown-menu'
-import { Button } from '@radix-ui/react-button'; // Or from '@/components/ui/button' for virtual & overflow trigger
+import { Slot as Button } from '@radix-ui/react-slot'; // Corrected path and aliased Slot as Button
 import { MoreHorizontal } from 'lucide-react'; // Example icon
 
 import { useResponsiveTabs } from './useResponsiveTabs';
@@ -70,9 +70,12 @@ export function ResponsiveTabsShadcn({
     items,
     containerRef,
     tabGap: tabGap ?? 4, // Shadcn TabsList often has small gap from `space-x-*`
-    reservedSpace: reservedSpace ?? (overflowTabs.length > 0 ? defaultReservedSpace : 0),
+    // Pass the reservedSpace prop directly. The hook itself should manage space for its "More" button.
+    // The prop `reservedSpace` is for external reservations.
+    reservedSpace: reservedSpace, 
   });
 
+  // Now, `overflowTabs` is available for use after the hook call.
   // Scroll active tab into view
   useEffect(() => {
     const activeVisibleIndex = visibleTabs.findIndex(item => item.value === active);
@@ -97,7 +100,11 @@ export function ResponsiveTabsShadcn({
         {items.map((item, i) => (
           <Button // Using Button, styled like TabsTrigger. Or an unstyled TabsTrigger.
             key={`virtual-${item.value}`}
-            ref={(el: HTMLButtonElement | null) => (virtualTabRefs.current[i] = el)}
+            ref={(el: HTMLButtonElement | null) => {
+              if (virtualTabRefs.current) {
+                virtualTabRefs.current[i] = el;
+              }
+            }}
             variant="ghost" // Common Shadcn variant that might match TabsTrigger base style
             size="sm"       // Common Shadcn size
             className={cn(
@@ -201,4 +208,3 @@ export function ResponsiveTabsShadcn({
     </div>
   );
 }
-```

@@ -372,7 +372,9 @@ export class ResponsiveTabsWebComponent extends HTMLElement {
 
       this.tabsContainerElement.appendChild(this.overflowMenuButtonElement); // Append button to the main tabs container
       // The dropdown is appended to the shadow root to overlay correctly, or to a specific container for it
-      this.shadowRootInstance.appendChild(this.overflowDropdownElement); 
+      if (this.overflowDropdownElement) {
+        this.shadowRootInstance.appendChild(this.overflowDropdownElement); 
+      }
       this.overflowMenuButtonElement.addEventListener('click', this.toggleOverflowMenu.bind(this));
       this.renderOverflowMenuButton(); // Set initial text
     }
@@ -410,4 +412,3 @@ export class ResponsiveTabsWebComponent extends HTMLElement {
 if (!customElements.get('responsive-tabs-wc')) {
   customElements.define('responsive-tabs-wc', ResponsiveTabsWebComponent);
 }
-```

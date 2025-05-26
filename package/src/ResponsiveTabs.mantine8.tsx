@@ -122,7 +122,11 @@ export function ResponsiveTabsMantine8({
         {items.map((item, i) => (
           <Button // Or Mantine's Tabs.Tab if it can be rendered standalone and unstyled for measurement
             key={`virtual-${item.value}`}
-            ref={(el) => (virtualTabRefs.current[i] = el)}
+            ref={(el) => {
+              if (virtualTabRefs.current) {
+                virtualTabRefs.current[i] = el;
+              }
+            }}
             size="sm" // Example: ensure this matches visible tab styling
             variant="subtle" // Example: ensure this matches visible tab styling
             radius="sm" // Example: ensure this matches visible tab styling
