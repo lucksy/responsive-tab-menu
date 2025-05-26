@@ -6,7 +6,11 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      'responsive-tab-menu': path.resolve(__dirname, '../package')
-    }
+      'responsive-tab-menu': path.resolve(__dirname, '../package/index.ts')
+    },
+    dedupe: ['@emotion/react']
+  },
+  optimizeDeps: {
+    include: ['responsive-tab-menu', '@emotion/react']
   }
 });
