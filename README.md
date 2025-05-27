@@ -83,13 +83,9 @@ Demo applications are available in the `apps/demo/` directory to showcase the fu
     *   Command: `pnpm --filter demo-mantine dev`
     *   Vite will start a development server and provide a URL (e.g., `http://localhost:5174` or similar).
 
-## Current Status & Known Issues (as of last build attempt)
+## Current Status
 
-*   **Library Packages:**
-    *   The core library packages (`packages/core`, `packages/html`, `packages/react`) build successfully, including TypeScript declaration file generation.
-*   **Demo Applications:**
-    *   `apps/demo/react`: Currently has a build issue during the Vite build phase related to Vite's resolution of the `responsive-tab-menu-core` package.
-    *   `apps/demo/mantine`: Currently has TypeScript errors (`TS7006` - implicit 'any' types in `src/App.tsx`) that prevent it from building successfully during its `tsc` phase.
+All core library packages (`packages/core`, `packages/html`, `packages/react`) and all demo applications (`apps/demo/html`, `apps/demo/react`, `apps/demo/mantine`) now build and run successfully according to their defined scripts.
 
 ## Contributing
 

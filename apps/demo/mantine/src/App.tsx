@@ -133,14 +133,14 @@ function DebugMeasurements({
           <Divider my="sm" />
           <Text fw={600}>Visible Tabs ({dimensions.visible?.length}):</Text>
           <Stack gap={4}>
-            {dimensions.visible?.map((tab, idx) => (
+            {dimensions.visible?.map((tab: { label?: string; width: number }, idx: number) => (
               <Text key={`v-${idx}`}>- {tab.label}: {tab.width}px</Text>
             ))}
           </Stack>
           <Divider my="sm" />
           <Text fw={600}>Overflow Tabs ({dimensions.overflow?.length}):</Text>
           <Stack gap={4}>
-            {dimensions.overflow?.map((tab, idx) => (
+            {dimensions.overflow?.map((tab: { label?: string; width: number }, idx: number) => (
               <Text key={`o-${idx}`}>- {tab.label}: {tab.width}px</Text>
             ))}
           </Stack>
