@@ -1,5 +1,31 @@
+# Node.js & package manager specific
 node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build outputs
 dist/
-.vite/
-demo/node_modules
-package/dist
+*.tsbuildinfo
+# Specific build outputs for packages and demos
+packages/*/dist
+apps/demo/*/dist
+apps/demo/*/.vite # Vite cache/build directory
+
+# OS-specific
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE & editor directories
+.idea/
+.vscode/
+*.swp
+*~
+
+# Old/Renamed paths (if any were missed by git mv)
+# demo/node_modules (already covered by node_modules/)
+# package/dist (already covered by packages/*/dist or dist/)

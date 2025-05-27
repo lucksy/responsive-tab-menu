@@ -1,0 +1,11 @@
+{
+  "name": "demo-html",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "echo \"Open index.html in your browser\""
+  },
+  "dependencies": {
+    "responsive-tab-menu-html": "workspace:*"
+  }
+}

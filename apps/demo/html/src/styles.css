@@ -1,0 +1,80 @@
+/* In apps/demo/html/src/styles.css */
+body { font-family: sans-serif; margin: 20px; }
+
+/* These are example class names, the JS implementation in html.ts needs to use these or similar */
+.responsive-tabs-container { /* Renamed from #tab-menu-container .tabs-wrapper for clarity */
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    overflow: hidden; /* Important for the logic that measures available width */
+    position: relative; /* For absolute positioning of overflow menu */
+}
+
+.visible-tabs { /* Renamed from #tab-menu-container .visible-tabs-area */
+    display: flex; /* Allow tabs to line up */
+    flex-shrink: 1; /* Allow this container to shrink */
+    min-width: 0; /* Important for flex shrinking */
+    overflow: hidden; /* Hide tabs that don't fit before JS kicks in (optional) */
+}
+
+.tab-item { /* Class for individual tab buttons in visible area */
+    padding: 10px 15px;
+    border: 1px solid transparent;
+    border-bottom: none;
+    background: #f0f0f0;
+    cursor: pointer;
+    margin-right: 5px;
+    white-space: nowrap; /* Prevent text wrapping */
+}
+
+.tab-item.active {
+    background: #fff;
+    border-color: #ccc;
+    border-bottom: 1px solid #fff; /* Cover the container's border */
+    position: relative;
+    top: 1px; /* Align with bottom border */
+}
+
+.more-tabs-button { /* Class for the 'More' button */
+    padding: 10px 15px;
+    background: #e0e0e0;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-left: 1px solid #ccc; /* Add left border for separation */
+    white-space: nowrap;
+    margin-left: auto; /* Pushes to the right if visible-tabs is also flex */
+}
+
+.overflow-tabs-menu { /* Class for the overflow dropdown UL element */
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border: 1px solid #ccc;
+    position: absolute;
+    background: #fff;
+    z-index: 10;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    /* Position it below the more button, adjust as necessary */
+    top: 100%; 
+    right: 0; /* Align to the right, assuming more-button is the last item or positioned right */
+    min-width: 150px; /* Give it some minimum width */
+}
+
+.overflow-tabs-menu li button.tab-item-overflow { /* Class for buttons inside the overflow menu */
+    display: block;
+    width: 100%;
+    padding: 8px 12px;
+    border: none;
+    background: none;
+    text-align: left;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.overflow-tabs-menu li button.tab-item-overflow:hover {
+    background: #f0f0f0;
+}
+
+.overflow-tabs-menu li button.tab-item-overflow.active {
+    font-weight: bold;
+    background: #e0e0e0;
+}

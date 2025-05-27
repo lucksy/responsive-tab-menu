@@ -1,0 +1,15 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "lib": ["DOM", "ES2015"], // Add DOM library for HTMLElement, document, etc.
+    "declaration": true,
+    "declarationMap": true
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"],
+  "references": [ // Add reference to core package
+    { "path": "../core" }
+  ]
+}
