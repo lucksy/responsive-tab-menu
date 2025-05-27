@@ -15,11 +15,10 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "baseUrl": ".",
     "paths": {
       "responsive-tab-menu-react": ["../../packages/react/src"]
     }
   },
   "include": ["src"],
-  "references": [{ "path": "../../packages/react" }]
+  "references": [{ "path": "../../../packages/react" }]
 }

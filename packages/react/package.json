@@ -5,7 +5,7 @@
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsup src/index.ts --format esm,cjs --dts --clean",
+    "build": "tsc -p tsconfig.json && tsup src/index.ts --format esm,cjs --no-dts",
     "dev": "tsup src/index.ts --dts --watch --format esm,cjs"
   },
   "dependencies": {

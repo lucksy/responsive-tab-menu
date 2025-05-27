@@ -8,7 +8,7 @@ The goal is to provide a flexible and easy-to-use tab menu that adapts to differ
 
 ## Packages
 
-This monorepo is structured using npm workspaces and includes the following packages:
+This monorepo is structured using pnpm workspaces and includes the following packages:
 
 *   **`packages/core`**:
     *   Contains the core, framework-agnostic logic for calculating tab overflow and managing visible/overflowing items. This package is intended to be used internally by the framework-specific implementations.
@@ -37,7 +37,7 @@ This monorepo is structured using npm workspaces and includes the following pack
 ### Prerequisites
 
 *   Node.js (LTS version recommended)
-*   npm (v7 or later, for workspace support), yarn, or pnpm
+*   pnpm (ensure it's installed, e.g., `npm install -g pnpm`)
 
 ### Installation
 
@@ -48,40 +48,48 @@ This monorepo is structured using npm workspaces and includes the following pack
     ```
 2.  Install dependencies from the root directory:
     ```bash
-    npm install
+    pnpm install
     ```
-    This will install dependencies for all packages and link them using npm workspaces.
+    This will install dependencies for all packages and link them using pnpm workspaces.
 
 ### Building Packages
 
 *   To build all packages that have a `build` script:
     ```bash
-    npm run build
+    pnpm run build -r
     ```
-    This command uses `npm run build -ws --if-present` to run the build script in each workspace.
+    (The `-r` flag runs the script in each project of the workspace. The root `package.json` also has a `build` script: `"build": "npm run build -ws --if-present"`, which `pnpm run build` would execute, achieving a similar recursive build. `pnpm run build -r` is more idiomatic for pnpm.)
 *   To build a specific package (e.g., `responsive-tab-menu-core`):
     ```bash
-    npm run build -w responsive-tab-menu-core
+    pnpm --filter responsive-tab-menu-core build
     # or
-    # cd packages/core && npm run build
+    # cd packages/core && pnpm run build
     ```
-    The `postinstall` script in the root `package.json` automatically builds the core, html, and react packages to ensure they are ready for use by the demo applications.
+    The `postinstall` script in the root `package.json` (triggered by `pnpm install`) automatically attempts to build the core, html, and react packages to ensure they are ready for use by the demo applications.
 
 ## Running Demo Applications
 
 Demo applications are available in the `apps/demo/` directory to showcase the functionality of each package.
 
 *   **HTML Demo:**
-    *   Command: `npm run dev:html`
+    *   Command: `pnpm --filter demo-html dev` (or `pnpm --filter demo-html start`)
     *   This will typically just print a message. Open `apps/demo/html/index.html` directly in your browser to view.
 
 *   **React Demo (Minimal):**
-    *   Command: `npm run dev:react`
+    *   Command: `pnpm --filter demo-react dev`
     *   Vite will start a development server and provide a URL (e.g., `http://localhost:5173`).
 
 *   **Mantine Demo (Feature-rich):**
-    *   Command: `npm run dev:mantine`
+    *   Command: `pnpm --filter demo-mantine dev`
     *   Vite will start a development server and provide a URL (e.g., `http://localhost:5174` or similar).
+
+## Current Status & Known Issues (as of last build attempt)
+
+*   **Library Packages:**
+    *   The core library packages (`packages/core`, `packages/html`, `packages/react`) build successfully, including TypeScript declaration file generation.
+*   **Demo Applications:**
+    *   `apps/demo/react`: Currently has a build issue during the Vite build phase related to Vite's resolution of the `responsive-tab-menu-core` package.
+    *   `apps/demo/mantine`: Currently has TypeScript errors (`TS7006` - implicit 'any' types in `src/App.tsx`) that prevent it from building successfully during its `tsc` phase.
 
 ## Contributing
 

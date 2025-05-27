@@ -62,8 +62,8 @@ export function ResponsiveTabMenu({
 
   // Encapsulate responsive logic
   const menuLogic = useMemo(() => new ResponsiveMenuLogic(items), [items]);
-  const [visibleItems, setVisibleItems] = useState<TabItem[]>(menuLogic.visibleItems);
-  const [overflowItems, setOverflowItems] = useState<TabItem[]>(menuLogic.overflowItems);
+  const [visibleItems, setVisibleItems] = useState<TabItem[]>(menuLogic.visibleItems as TabItem[]);
+  const [overflowItems, setOverflowItems] = useState<TabItem[]>(menuLogic.overflowItems as TabItem[]);
 
   // Defer tab switch to avoid blocking interactions
   const deferOnChange = (value: string) => {
@@ -82,8 +82,8 @@ export function ResponsiveTabMenu({
     const tabWidths = virtualRefs.current.map(el => (el ? el.offsetWidth + 8 : 0));
 
     menuLogic.calculateOverflow(availableWidth, tabWidths);
-    setVisibleItems([...menuLogic.visibleItems]);
-    setOverflowItems([...menuLogic.overflowItems]);
+    setVisibleItems([...menuLogic.visibleItems] as TabItem[]);
+    setOverflowItems([...menuLogic.overflowItems] as TabItem[]);
   };
 
   // Run once on mount or if items change

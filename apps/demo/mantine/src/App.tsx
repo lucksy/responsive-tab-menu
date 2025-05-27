@@ -155,7 +155,7 @@ function App() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   return (
-    <MantineProvider withGlobalStyles withNormalizeCSS>
+    <MantineProvider>
       <Box
         style={{
           minHeight: '100vh',

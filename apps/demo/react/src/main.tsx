@@ -6,7 +6,7 @@ import './index.css' // Optional: for minimal global styles
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <MantineProvider withGlobalStyles withNormalizeCSS>
+    <MantineProvider>
       <App />
     </MantineProvider>
   </React.StrictMode>,

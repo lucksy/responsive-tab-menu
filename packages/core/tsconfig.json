@@ -4,7 +4,8 @@
     "outDir": "./dist",
     "rootDir": "./src",
     "declaration": true, // Generate .d.ts files
-    "declarationMap": true // Generate source maps for .d.ts files (optional, but good for DX)
+    "declarationMap": true, // Generate source maps for .d.ts files (optional, but good for DX)
+    "composite": true // Required for project references
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist"]
